@@ -10,6 +10,7 @@ COPY . .
 
 RUN pip3 install pipenv && pipenv install --system --deploy --ignore-pipfile
 
-RUN cd src
 
 CMD ["pipenv", "run", "uvicorn", "src.main:app",  "--host", "0.0.0.0", "--port", "80"]
+
+EXPOSE 80 443 22
