@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pytesseract="*"
+opencv-python="*"
+pdf2image="*"
+Pillow= {version="==9.0.0"}
+numpy="*"
+pandas="*"
+scipy="*"
+sklearn="*"
+fastapi="*"
+python-multipart="*"
+pydantic = "*"
+gunicorn = "*"
+uvicorn = "*"
+
+[dev-packages]
+pytest = "*"
