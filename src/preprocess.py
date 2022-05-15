@@ -1,4 +1,4 @@
-from pdf2image import convert_from_bytes
+from pdf2image import convert_from_bytes, pdfinfo_from_bytes
 import cv2
 import numpy as np
 from scipy import stats
@@ -11,18 +11,16 @@ def pdf2images(pdf, pages) -> List[np.ndarray]:
 		Function to convert pdfs to images from buffers, given a list of pages.
 
 	"""
-	images = convert_from_bytes(pdf)
-
-	if len(images) == 1:
-		return [np.array(images[0])]
 
 	return_images:List[np.array] = []
 	for page in pages:
-		try:
-			return_images.append(np.array(images[page - 1]))
-		except IndexError:
-			pass
-	
+		
+		image = convert_from_bytes(pdf, dpi=300, first_page=page, last_page=page)
+		if image:
+			return_images.append(np.array(image[0]))
+		
+	print('Images Read!')
+
 	return return_images
 
 @wrap

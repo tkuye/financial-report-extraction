@@ -28,11 +28,12 @@ async def pipeline(file, pages:str, filename, thresh_change) -> StreamingRespons
 		try:
 		# find our height of each line in the file
 			distance_thresh = await get_distance_threshold(image)
+			print('Got Threshold: {}'.format(distance_thresh))
 			# ocr the images
 			results = await ocr_to_results(image)
 			# build our initial clusters given the results
 			clusters = await cluster_coords(results, distance_thresh, thresh_change)
-
+			
 			# narrow the clusters
 			word_clusters = await find_clusters(clusters, image)
 			column_count = await find_column_count(word_clusters)
@@ -41,12 +42,12 @@ async def pipeline(file, pages:str, filename, thresh_change) -> StreamingRespons
 			
 			# create a pandas df givent the clusters, targets and columns
 			df = await create_dataframe_from_clusters(word_clusters, targets, column_count)
-			
+			print(df)
 			df_bytes = df.to_csv(index=False)
 
 			zf.writestr(f'{pdf_file_name}-{idx + 1}.csv', df_bytes)
-		except Exception:
-			pass
+		except Exception as e:
+			print(e)
 	zf.close()
 		
 	resp = StreamingResponse(iter([s.getvalue()]), media_type = "application/x-zip-compressed",headers={
