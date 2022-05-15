@@ -23,7 +23,7 @@ async def create_csv_file(file: UploadFile = File(), pages:str = Form(), thresho
 		threshold = int(threshold)
 	except ValueError:
 		threshold = 0
-	res = await pipeline(file_content, pages, file.filename, threshold)
-	return res
+	response = await pipeline(file_content, pages, file.filename, threshold)
+	return response
 
 
